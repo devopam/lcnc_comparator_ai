@@ -11,12 +11,25 @@ def render_comparison_matrix(df):
     for col in numeric_cols:
         df_display[col] = df_display[col].apply(lambda x: f"{x:.1f}%")
 
-    # Adjust column widths and formatting
+    # Configure column widths
+    column_config = {
+        'Platform': st.column_config.TextColumn(width='medium'),
+        'Operating_System': st.column_config.TextColumn(width='medium'),
+        'Price_Range': st.column_config.TextColumn(width='small'),
+        'Features': st.column_config.TextColumn(width='large')
+    }
+
+    # Add score columns to configuration
+    for col in numeric_cols:
+        column_config[col] = st.column_config.TextColumn(width='small')
+
+    # Display the dataframe with improved formatting
     st.dataframe(
         df_display,
-        height=600,  # Increased height
+        height=800,  # Further increased height
         use_container_width=True,
-        hide_index=True  # Hide index for cleaner look
+        hide_index=True,
+        column_config=column_config
     )
 
     # Add download button
@@ -31,10 +44,18 @@ def render_comparison_matrix(df):
 def render_feature_checklist(feature_matrix):
     """Render the feature comparison checklist"""
     st.subheader("Feature Comparison")
+
+    # Configure column widths for feature matrix
+    feature_column_config = {
+        col: st.column_config.TextColumn(width='small')
+        for col in feature_matrix.columns
+    }
+
     st.dataframe(
         feature_matrix,
-        height=500,  # Increased height
-        use_container_width=True
+        height=600,  # Increased height
+        use_container_width=True,
+        column_config=feature_column_config
     )
 
     # Add feature matrix download button
@@ -44,5 +65,5 @@ def render_feature_checklist(feature_matrix):
         data=csv,
         file_name="feature_matrix.csv",
         mime="text/csv",
-        key="feature_matrix_download"  # Added unique key
+        key="feature_matrix_download"
     )

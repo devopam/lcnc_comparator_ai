@@ -12,15 +12,31 @@ st.set_page_config(
     page_title="Low-Code/No-Code Platform Comparison",
     page_icon="🔄",
     layout="wide",
-    initial_sidebar_state="collapsed"  # Collapse sidebar by default for more space
+    initial_sidebar_state="collapsed",  # Collapse sidebar by default for more space
+    menu_items={
+        'Get Help': None,
+        'Report a bug': None,
+        'About': None
+    }  # Hide menu items to maximize space
 )
 
-# Main title
-st.title("Low-Code/No-Code Platform Comparison Tool")
+# Remove padding
 st.markdown("""
-Compare different low-code and no-code platforms across various metrics including
-speed, accuracy, and maintenance aspects.
-""")
+    <style>
+        .block-container {
+            padding-top: 1rem;
+            padding-bottom: 0rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+        .element-container {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+
+# Main title with reduced padding
+st.markdown("<h1 style='margin-bottom:0.5rem'>Low-Code/No-Code Platform Comparison Tool</h1>", unsafe_allow_html=True)
 
 # Get data
 df = get_platform_data()
@@ -77,11 +93,10 @@ with tab3:
 with tab4:
     render_cost_calculator()
 
-# Methodology explanation
+# Methodology explanation in expandable section to save space
 with st.expander("Methodology"):
     st.markdown("""
     ### How we calculate scores
-
     - **Speed Score**: Evaluated based on application build time, runtime performance, and deployment speed
     - **Accuracy Score**: Measured through user testing, error rates, and output consistency
     - **Maintenance Score**: Based on update frequency, documentation quality, and community support
@@ -93,7 +108,7 @@ with st.expander("Methodology"):
     4. Community feedback
     """)
 
-# Footer
+# Footer with minimal space
 st.markdown("---")
 st.markdown(
     """
