@@ -4,6 +4,7 @@ from utils.data_handler import get_platform_data, filter_by_os, get_feature_comp
 from utils.visualizations import create_comparison_bar_chart, create_scatter_plot
 from components.comparison_matrix import render_comparison_matrix, render_feature_checklist
 from components.platform_details import render_platform_details
+from components.cost_calculator import render_cost_calculator
 
 # Page configuration
 st.set_page_config(
@@ -33,23 +34,28 @@ os_filter = st.sidebar.selectbox(
 filtered_df = filter_by_os(df, os_filter)
 
 # Main content
-tab1, tab2, tab3 = st.tabs(["Comparison Matrix", "Performance Analysis", "Feature Comparison"])
+tab1, tab2, tab3, tab4 = st.tabs([
+    "Comparison Matrix",
+    "Performance Analysis",
+    "Feature Comparison",
+    "Cost Calculator"
+])
 
 with tab1:
     render_comparison_matrix(filtered_df)
-    
+
 with tab2:
     # Performance metrics visualization
     col1, col2 = st.columns(2)
-    
+
     with col1:
         speed_chart = create_comparison_bar_chart(filtered_df, "Speed")
         st.plotly_chart(speed_chart, use_container_width=True)
-        
+
     with col2:
         scatter_plot = create_scatter_plot(filtered_df)
         st.plotly_chart(scatter_plot, use_container_width=True)
-    
+
     # Platform details
     selected_platform = st.selectbox(
         "Select Platform for Detailed Analysis",
@@ -60,6 +66,9 @@ with tab2:
 with tab3:
     feature_matrix = get_feature_comparison()
     render_feature_checklist(feature_matrix)
+
+with tab4:
+    render_cost_calculator()
 
 # Methodology explanation
 with st.expander("Methodology"):
