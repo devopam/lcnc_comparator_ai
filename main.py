@@ -5,6 +5,7 @@ from utils.visualizations import create_comparison_bar_chart, create_scatter_plo
 from components.comparison_matrix import render_comparison_matrix, render_feature_checklist
 from components.platform_details import render_platform_details
 from components.cost_calculator import render_cost_calculator
+from components.comparison_slider import render_comparison_slider
 
 # Page configuration
 st.set_page_config(
@@ -42,6 +43,10 @@ tab1, tab2, tab3, tab4 = st.tabs([
 ])
 
 with tab1:
+    # Add the comparison slider at the top
+    render_comparison_slider()
+    st.markdown("---")
+    # Original comparison matrix below
     render_comparison_matrix(filtered_df)
 
 with tab2:
