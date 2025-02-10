@@ -20,7 +20,7 @@ def render_platform_details(platform_name):
 
     # Display radar chart
     radar_chart = create_radar_chart(metrics, platform_name)
-    st.plotly_chart(radar_chart)
+    st.plotly_chart(radar_chart, key=f"radar_{platform_name}")
 
     # Review Analytics Section
     st.subheader("Review Analytics")
@@ -28,7 +28,7 @@ def render_platform_details(platform_name):
     # Create and display heatmap
     heatmap = create_review_heatmap(platform_name)
     if heatmap:
-        st.plotly_chart(heatmap, use_container_width=True)
+        st.plotly_chart(heatmap, use_container_width=True, key=f"heatmap_{platform_name}")
         st.caption("Heat map shows average daily ratings. Green indicates higher ratings, red indicates lower ratings.")
     else:
         st.info("No review data available for the heat map visualization. Submit some reviews to see the pattern!")

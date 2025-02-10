@@ -55,11 +55,11 @@ with tab2:
 
     with col1:
         speed_chart = create_comparison_bar_chart(filtered_df, "Speed")
-        st.plotly_chart(speed_chart, use_container_width=True)
+        st.plotly_chart(speed_chart, use_container_width=True, key="speed_comparison_chart")
 
     with col2:
         scatter_plot = create_scatter_plot(filtered_df)
-        st.plotly_chart(scatter_plot, use_container_width=True)
+        st.plotly_chart(scatter_plot, use_container_width=True, key="speed_accuracy_scatter")
 
     # Platform details
     selected_platform = st.selectbox(
