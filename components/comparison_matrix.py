@@ -11,11 +11,12 @@ def render_comparison_matrix(df):
     for col in numeric_cols:
         df_display[col] = df_display[col].apply(lambda x: f"{x:.1f}%")
 
-    # Display the dataframe
+    # Adjust column widths and formatting
     st.dataframe(
         df_display,
-        height=400,
-        use_container_width=True
+        height=600,  # Increased height
+        use_container_width=True,
+        hide_index=True  # Hide index for cleaner look
     )
 
     # Add download button
@@ -32,6 +33,16 @@ def render_feature_checklist(feature_matrix):
     st.subheader("Feature Comparison")
     st.dataframe(
         feature_matrix,
-        height=300,
+        height=500,  # Increased height
         use_container_width=True
+    )
+
+    # Add feature matrix download button
+    csv = feature_matrix.to_csv()
+    st.download_button(
+        label="Download Feature Matrix",
+        data=csv,
+        file_name="feature_matrix.csv",
+        mime="text/csv",
+        key="feature_matrix_download"  # Added unique key
     )

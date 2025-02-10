@@ -11,7 +11,8 @@ from components.comparison_slider import render_comparison_slider
 st.set_page_config(
     page_title="Low-Code/No-Code Platform Comparison",
     page_icon="🔄",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="collapsed"  # Collapse sidebar by default for more space
 )
 
 # Main title
@@ -25,11 +26,12 @@ speed, accuracy, and maintenance aspects.
 df = get_platform_data()
 
 # Sidebar filters
-st.sidebar.header("Filters")
-os_filter = st.sidebar.selectbox(
-    "Operating System",
-    ["All", "Windows", "Linux", "Web-based", "Mobile"]
-)
+with st.sidebar:
+    st.header("Filters")
+    os_filter = st.selectbox(
+        "Operating System",
+        ["All", "Windows", "Linux", "Web-based", "Mobile"]
+    )
 
 # Filter data
 filtered_df = filter_by_os(df, os_filter)
@@ -46,7 +48,7 @@ with tab1:
     # Add the comparison slider at the top
     render_comparison_slider()
     st.markdown("---")
-    # Original comparison matrix below
+    # Original comparison matrix below with full width
     render_comparison_matrix(filtered_df)
 
 with tab2:
