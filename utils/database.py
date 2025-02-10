@@ -1,7 +1,8 @@
-from sqlalchemy import create_engine, Column, Integer, String, Float
+from sqlalchemy import create_engine, Column, Integer, String, Float, ForeignKey, DateTime
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, relationship
 import os
+from datetime import datetime
 
 # Get database URL from environment variable
 DATABASE_URL = os.getenv('DATABASE_URL')
@@ -27,6 +28,19 @@ class Platform(Base):
     maintenance_score = Column(Float)
     price_range = Column(String)
     features = Column(String)
+    reviews = relationship("Review", back_populates="platform")
+
+class Review(Base):
+    """Review model for storing user reviews and ratings"""
+    __tablename__ = "reviews"
+
+    id = Column(Integer, primary_key=True, index=True)
+    platform_id = Column(Integer, ForeignKey("platforms.id"))
+    user_name = Column(String)
+    rating = Column(Float)  # 1-5 star rating
+    comment = Column(String)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    platform = relationship("Platform", back_populates="reviews")
 
 # Create all tables
 Base.metadata.create_all(bind=engine)
@@ -42,7 +56,7 @@ def get_db():
 def init_db():
     """Initialize database with sample data"""
     db = SessionLocal()
-    
+
     # Check if data already exists
     if db.query(Platform).first() is None:
         sample_platforms = [
@@ -66,8 +80,8 @@ def init_db():
             ),
             # Add more sample platforms...
         ]
-        
+
         for platform in sample_platforms:
             db.add(platform)
-        
+
         db.commit()
