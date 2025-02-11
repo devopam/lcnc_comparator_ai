@@ -17,11 +17,25 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "streamlit_app"
+args = "init_database"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "init_database"
+args = "streamlit_app"
+
+[[workflows.workflow]]
+name = "init_database"
+author = "agent"
+
+[workflows.workflow.metadata]
+agentRequireRestartOnSave = false
+
+[[workflows.workflow.tasks]]
+task = "packager.installForAll"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python init_db.py"
 
 [[workflows.workflow]]
 name = "streamlit_app"
@@ -37,20 +51,6 @@ task = "packager.installForAll"
 task = "shell.exec"
 args = "streamlit run main.py --server.port 5000"
 waitForPort = 5000
-
-[[workflows.workflow]]
-name = "init_database"
-author = "agent"
-
-[workflows.workflow.metadata]
-agentRequireRestartOnSave = false
-
-[[workflows.workflow.tasks]]
-task = "packager.installForAll"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "python init_db.py"
 
 [[ports]]
 localPort = 5000
