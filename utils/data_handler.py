@@ -1,11 +1,23 @@
 import pandas as pd
 from .database import SessionLocal, Platform
+import logging
+
+# Set up logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 def get_platform_data():
     """Returns platform data as a pandas DataFrame"""
     db = SessionLocal()
     try:
+        logger.info("Fetching platform data from database")
         platforms = db.query(Platform).all()
+        logger.info(f"Found {len(platforms)} platforms")
+
+        if not platforms:
+            logger.warning("No platforms found in database")
+            return pd.DataFrame()
+
         data = {
             'Platform': [p.name for p in platforms],
             'Operating_System': [p.operating_system for p in platforms],
@@ -15,7 +27,13 @@ def get_platform_data():
             'Price_Range': [p.price_range for p in platforms],
             'Features': [p.features for p in platforms]
         }
-        return pd.DataFrame(data)
+
+        df = pd.DataFrame(data)
+        logger.info(f"Created DataFrame with {len(df)} rows and {len(df.columns)} columns")
+        return df
+    except Exception as e:
+        logger.error(f"Error fetching platform data: {str(e)}")
+        raise
     finally:
         db.close()
 

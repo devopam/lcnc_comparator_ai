@@ -5,23 +5,42 @@ def render_comparison_matrix(df):
     """Render the comparison matrix component"""
     st.subheader("Platform Comparison Matrix")
 
+    if df.empty:
+        st.error("No platform data available. Please check the database connection.")
+        return
+
     # Format numeric columns to show as percentages
     numeric_cols = [col for col in df.columns if col.endswith('_Score')]
     df_display = df.copy()
     for col in numeric_cols:
         df_display[col] = df_display[col].apply(lambda x: f"{x:.1f}%")
 
-    # Configure column widths
+    # Configure column widths with improved visibility
     column_config = {
-        'Platform': st.column_config.TextColumn(width='medium'),
-        'Operating_System': st.column_config.TextColumn(width='medium'),
-        'Price_Range': st.column_config.TextColumn(width='small'),
-        'Features': st.column_config.TextColumn(width='large')
+        'Platform': st.column_config.TextColumn(
+            width='medium',
+            help="Platform name"
+        ),
+        'Operating_System': st.column_config.TextColumn(
+            width='medium',
+            help="Compatible operating systems"
+        ),
+        'Price_Range': st.column_config.TextColumn(
+            width='small',
+            help="Price range for the platform"
+        ),
+        'Features': st.column_config.TextColumn(
+            width='large',
+            help="Available features"
+        )
     }
 
     # Add score columns to configuration
     for col in numeric_cols:
-        column_config[col] = st.column_config.TextColumn(width='small')
+        column_config[col] = st.column_config.TextColumn(
+            width='small',
+            help=f"{col.replace('_Score', '')} performance score"
+        )
 
     # Display total number of platforms
     st.caption(f"Total Platforms: {len(df_display)}")
@@ -29,7 +48,7 @@ def render_comparison_matrix(df):
     # Display the dataframe with improved formatting and increased height
     st.dataframe(
         df_display,
-        height=1000,  # Significantly increased height
+        height=1200,  # Further increased height
         use_container_width=True,
         hide_index=True,
         column_config=column_config
