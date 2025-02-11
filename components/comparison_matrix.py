@@ -23,10 +23,13 @@ def render_comparison_matrix(df):
     for col in numeric_cols:
         column_config[col] = st.column_config.TextColumn(width='small')
 
-    # Display the dataframe with improved formatting
+    # Display total number of platforms
+    st.caption(f"Total Platforms: {len(df_display)}")
+
+    # Display the dataframe with improved formatting and increased height
     st.dataframe(
         df_display,
-        height=800,  # Further increased height
+        height=1000,  # Significantly increased height
         use_container_width=True,
         hide_index=True,
         column_config=column_config
@@ -51,9 +54,12 @@ def render_feature_checklist(feature_matrix):
         for col in feature_matrix.columns
     }
 
+    # Display total features and platforms
+    st.caption(f"Comparing {len(feature_matrix.columns)} features across {len(feature_matrix)} platforms")
+
     st.dataframe(
         feature_matrix,
-        height=600,  # Increased height
+        height=800,  # Increased height
         use_container_width=True,
         column_config=feature_column_config
     )

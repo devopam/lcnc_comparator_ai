@@ -6,6 +6,7 @@ def main():
         print("Initializing database...")
         init_db()
         print("Database initialization completed successfully!")
+        print("All platforms have been loaded into the database.")
         return 0
     except Exception as e:
         print(f"Error during database initialization: {str(e)}", file=sys.stderr)
